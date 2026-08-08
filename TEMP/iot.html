@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block body %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 2rem;
+    background: #121212;
+    color: #eee;
+  }
+
+  h4 {
+    margin-bottom: 1.5rem;
+    color: #3d89fb;
+  }
+
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  select, input, button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    background: #1f1f1f;
+    color: #eee;
+  }
+
+  button {
+    background: #3d89fb;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: #2a66cc;
+  }
+
+  .form-section {
+    display: none;
+    background: #1a1a1a;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .visible {
+    display: block;
+  }
+
+  #result {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #222;
+    border-radius: 6px;
+  }
+</style>
+
+<h4 style="margin-top:20px;text-align:center">IoT Network Anomaly Detection</h4>
+
+<form id="device-form">
+  <label for="device">Select IoT Device:</label>
+  <select id="device" name="device" required>
+    <option value="" disabled selected>-- Choose Device --</option>
+    <option value="fridge">Smart Fridge</option>
+    <option value="door">Smart Door</option>
+    <option value="thermostat">Thermostat</option>
+    <option value="motion">Motion Sensor</option>
+    <option value="weather">Weather Station</option>
+    <option value="gps">GPS Tracker</option>
+  </select>
+
+  <!-- Fridge -->
+  <div id="fridge-form" class="form-section">
+    <label>Fridge Temperature:</label>
+    <input type="number" step="0.01" name="fridge_temperature">
+    <label>Temperature Condition:</label>
+    <select name="temp_condition">
+      <option value="low">Low</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+
+  <!-- Door -->
+  <div id="door-form" class="form-section">
+    <label>Door State:</label>
+    <select name="door_state">
+      <option value="0">Closed</option>
+      <option value="1">Open</option>
+    </select>
+    <label>Smartphone Signal:</label>
+    <select name="sphone_signal">
+      <option value="0">Weak</option>
+      <option value="1">Strong</option>
+    </select>
+  </div>
+
+  <!-- Thermostat -->
+  <div id="thermostat-form" class="form-section">
+    <label>Current Temperature:</label>
+    <input type="number" step="0.01" name="current_temperature">
+    <label>Thermostat Status:</label>
+    <select name="thermostat_status">
+      <option value="0">Off</option>
+      <option value="1">On</option>
+    </select>
+  </div>
+
+  <!-- Motion -->
+  <div id="motion-form" class="form-section">
+    <label>Motion Status:</label>
+    <select name="motion_status">
+      <option value="0">No Motion</option>
+      <option value="1">Motion Detected</option>
+    </select>
+    <label>Light Status:</label>
+    <select name="light_status">
+      <option value="0">Off</option>
+      <option value="1">On</option>
+    </select>
+  </div>
+
+  <!-- Weather -->
+  <div id="weather-form" class="form-section">
+    <label>Temperature (°C):</label>
+    <input type="number" step="0.01" name="temperature">
+    <label>Pressure (atm):</label>
+    <input type="number" step="0.01" name="pressure">
+    <label>Humidity (%):</label>
+    <input type="number" step="0.01" name="humidity">
+  </div>
+
+  <!-- GPS -->
+  <div id="gps-form" class="form-section">
+    <label>Latitude:</label>
+    <input type="number" step="0.000001" name="latitude">
+    <label>Longitude:</label>
+    <input type="number" step="0.000001" name="longitude">
+  </div>
+
+  <!-- Common -->
+  <div id="common-fields" class="form-section">
+    <label>Hour:</label>
+    <input type="number" name="hour" min="0" max="23">
+    <label>Day:</label>
+    <input type="number" name="day" min="1" max="31">
+    <label>Month:</label>
+    <input type="number" name="month" min="1" max="12">
+    <label>Weekday:</label>
+    <input type="number" name="weekday" min="0" max="6">
+  </div>
+
+  <button type="submit">Predict</button>
+</form>
+
+<div id="result" style="margin-bottom:40px"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  const deviceSelect = document.getElementById('device');
+  const formSections = document.querySelectorAll('.form-section');
+  const form = document.getElementById('device-form');
+  const resultDiv = document.getElementById('result');
+
+  // Show/Hide the correct form
+  deviceSelect.addEventListener('change', () => {
+    formSections.forEach(s => s.classList.remove('visible'));
+    const selected = deviceSelect.value;
+    if (selected) {
+      const selectedForm = document.getElementById(`${selected}-form`);
+      if (selectedForm) selectedForm.classList.add('visible');
+      document.getElementById('common-fields').classList.add('visible');
+    }
+  });
+
+  // Handle submission
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Enable required only for visible inputs
+    document.querySelectorAll('.form-section').forEach(section => {
+      const inputs = section.querySelectorAll('input, select');
+      inputs.forEach(input => {
+        input.required = section.classList.contains('visible');
+      });
+    });
+
+    const device = deviceSelect.value;
+    if (!device) {
+      Swal.fire('Error', 'Please select a device.', 'error');
+      return;
+    }
+
+    // Collect visible form data
+    const data = { device };
+    const visibleInputs = document.querySelectorAll('.visible input, .visible select');
+    visibleInputs.forEach(input => data[input.name] = input.value);
+
+    resultDiv.textContent = 'Predicting...';
+
+try {
+  const res = await fetch('/predict-iot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  if (!res.ok) throw new Error(result.error || 'Prediction failed');
+
+  // Build output HTML dynamically
+  let html = `
+    <h5 class="fw-bold text-primary mb-2">Device: ${result.device}</h5>
+    <p><strong>Predicted Attack:</strong> ${result.predicted_attack}</p>
+    <p><strong>Description:</strong> ${result.description}</p>
+    <p><strong>Confidence:</strong> ${(result.confidence * 100).toFixed(2)}%</p>
+    <p><strong>Risk Level:</strong> ${result.severity}</p>
+  `;
+
+  if (result.recommended_actions && Array.isArray(result.recommended_actions)) {
+    html += `<strong>Recommendations:</strong><ul>`;
+    result.recommended_actions.forEach(r => {
+      html += `<li>${r}</li>`;
+    });
+    html += `</ul>`;
+  }
+
+  resultDiv.innerHTML = html;
+
+} catch (err) {
+  resultDiv.textContent = '';
+  Swal.fire('Error', err.message, 'error');
+}
+
+  });
+</script>
+
+{% endblock %}

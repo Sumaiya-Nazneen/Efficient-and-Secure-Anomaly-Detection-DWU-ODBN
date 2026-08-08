@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  
+<!-- Mirrored from aizan.vercel.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Nov 2025 07:28:02 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>NetAnomDet: Anomaly Detection Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"/>
+    <link rel="shortcut icon" href="../static/assets/images/fav.png"/>
+    <link rel="stylesheet" href="../static/assets/css/animate.min.css"/>
+    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../static/assets/css/slick.css"/>
+    <link rel="stylesheet" href="../static/assets/icons/style.css"/>
+    <link rel="stylesheet" href="../static/assets/css/style.css"/>
+    <link rel="stylesheet" href="../static/assets/css/swiper-bundle.min.css"/>
+  </head>
+  <body> 
+<!-- Navbar -->
+<header id="header" class="bg-gray text-white">
+  <div class="container d-flex justify-content-between align-items-center py-3">
+ <a href="/" class="logo d-flex align-items-center text-white text-decoration-none">
+  <img src="../static/assets/images/logo.png" 
+       alt="NetAnomDet Logo" 
+       width="46" 
+       height="46" 
+       class="me-2 rounded-circle">
+  <span class="fs-4 fw-bold">NetAnomDet</span>
+</a>
+
+    <nav>
+      <ul class="nav">
+        <li class="nav-item"><a href="/" class="nav-link text-white active">Home</a></li>
+        {% if session['user_email'] %}
+
+         <li class="nav-item dropdown">
+          <a href="#services" class="nav-link dropdown-toggle text-white" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a href="/windows" class="dropdown-item">Windows Anomaly Detection</a></li>
+            <li><a href="/iot" class="dropdown-item">IoT Device Analytics</a></li>
+            <li><a href="/network" class="dropdown-item">Network Traffic Monitoring</a></li>
+         
+          </ul>
+        </li>
+        {% endif %}
+       
+        <li class="nav-item"><a href="/#about" class="nav-link text-white">About</a></li>
+        <li class="nav-item"><a href="/methodology" class="nav-link text-white">Methodology</a></li>
+        <li class="nav-item"><a href="/#contact" class="nav-link text-white">Contact</a></li>
+      </ul>
+    </nav>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% if session['user_email'] %}
+  <a href="{{ url_for('logout') }}" class="btn btn-primary">Logout</a>
+{% else %}
+  <a href="#" id="signInBtn" class="btn btn-primary">Sign In</a>
+{% endif %}
+
+
+  </div>
+</header>
+
+
+
+
+{% block body %}{% endblock body %}
+
+
+
+ <!-- Footer -->
+<footer class="bg-dark text-white py-5 mt-4" id="contact">
+  <div class="container">
+    <div class="row gy-4">
+      <div class="col-md-4">
+        <h5 class="fw-bold">NetAnomDet</h5>
+        <p>Your comprehensive platform for detecting anomalies across Windows, IoT devices, and network data to ensure security and operational excellence.</p>
+      </div>
+      <div class="col-md-4">
+        <h6>Navigate</h6>
+        <ul class="list-unstyled">
+          <li><a href="#home" class="text-white text-decoration-none">Home</a></li>
+          <li><a href="#services" class="text-white text-decoration-none">Services</a></li>
+          <li><a href="#about" class="text-white text-decoration-none">About</a></li>
+          <li><a href="#contact" class="text-white text-decoration-none">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h6>Contact Us</h6>
+        <p>Email: support@netanomdet.com</p>
+        <p>Phone: +1 (123) 456-7890</p>
+        <div class="social-icons d-flex gap-3 mt-3">
+          <a href="https://facebook.com" target="_blank" class="text-white fs-4"><i class="bi bi-facebook"></i></a>
+          <a href="https://linkedin.com" target="_blank" class="text-white fs-4"><i class="bi bi-linkedin"></i></a>
+          <a href="https://twitter.com" target="_blank" class="text-white fs-4"><i class="bi bi-twitter"></i></a>
+          <a href="https://instagram.com" target="_blank" class="text-white fs-4"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+    <hr class="my-4 border-light"/>
+    <div class="text-center small">&copy; 2025 NetAnomDet. All rights reserved.</div>
+  </div>
+</footer>
+    <script src="../static/assets/js/jquery-3.7.0.js"></script>
+    <script src="../static/assets/js/jquery-migrate-3.4.1.js"></script>
+    <script src="../static/assets/js/slick.min.js"></script>
+    <script src="../static/assets/js/scrollreveal.js"></script>
+    <script src="../static/assets/js/swiper-bundle.min.js"></script>
+    <script src="../static/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/assets/js/countUp.min.js"></script>
+    <script src="../static/assets/js/waypoints.min.js"></script>
+    <script src="../static/assets/js/phosphor-icons.js"></script>
+    <script src="../static/assets/js/main.min.js"></script>
+  </body>
+
+
+
+
+
+
+
+
+  <!-- Mirrored from aizan.vercel.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 07 Nov 2025 07:28:34 GMT -->
+</html>
+

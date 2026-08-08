@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div id="content">
+    <div class="breadcrum pt-80 pb-80">
+        <div class="bg-img">
+            <img src="../static/assets/images/slider/breadcrum.png" alt=""/>
+        </div>
+        <div class="container">
+            <div class="row flex-center">
+                <div class="col-lg-7 col-md-8 col-sm-10">
+                    <div class="heading-nav flex-center gap-8">
+                        <a class="hover-underline caption1 text-placehover" href="index-2.html">Home </a>
+                        <i class="ph-fill ph-dot-outline text-purple"></i>
+                        <a class="caption1 text-placehover" href="#!">Page</a>
+                        <i class="ph-fill ph-dot-outline text-purple"></i>
+                        <div class="caption1 text-white">Methodology</div>
+                    </div>
+                    <div class="text-nav text-center mt-12">
+                        <div class="heading3 text-white text-center display-inline-block">Methodology</div>
+                        <div class="sub-heading mt-8 text-white text-center fw-400">
+                            In-depth review of algorithms, model architecture, and evaluation strategies applied across diverse anomaly detection domains: Network Traffic, Windows OS, and IoT Devices.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="about-us style-about pt-80 pb-80 bg-black-surface">
+        <div class="container">
+            <div class="row row-gap-40 flex-between">
+
+                <div class="col-12 col-lg-6 flex-column row-gap-20">
+
+                    <!-- Network Traffic Anomaly -->
+                    <div>
+                        <h3 class="heading3 text-white mb-3">Network Traffic Anomaly Detection</h3>
+                        <p class="body2 text-placehover mt-16">
+                            Using flow-level metadata, including protocol, ports, packet counts, and flags, the model employs the <strong>Dual Weight Dense (DWU ODBN)</strong> architecture to uncover subtle network attack patterns such as DDoS, scanning, and injections.
+                        </p>
+                        <p class="body2 text-placehover mt-16">
+                            Batch normalization and dropout layers are employed to prevent overfitting. The model outputs predictions leveraged to trigger real-time alerts and act as a foundation for threat intelligence.
+                        </p>
+                    </div>
+
+                    <!-- Windows Anomaly -->
+                    <div class="mt-5">
+                        <h3 class="heading3 text-white mb-3">Windows Operating System Anomaly Detection</h3>
+                        <p class="body2 text-placehover mt-16">
+                            By analyzing system logs, process activity, and performance counters, this approach utilizes a neural network with the DWU ODBN layer to distinguish normal Windows behavior from malicious anomalies like backdoors, ransomware, and credential theft.
+                        </p>
+                        <p class="body2 text-placehover mt-16">
+                            Regularization techniques improve generalization and help handle the variability of diverse Windows environments and attack vectors.
+                        </p>
+                    </div>
+
+                    <!-- IoT Devices Anomaly -->
+                    <div class="mt-5">
+                        <h3 class="heading3 text-white mb-3">Internet of Things (IoT) Device Anomaly Detection</h3>
+                        <p class="body2 text-placehover mt-16">
+                            Given the diversity of IoT devices, sensor streams and device communication patterns are leveraged with sequential modeling and the custom dual-weight architecture to detect unusual behaviors and potential security breaches.
+                        </p>
+                        <p class="body2 text-placehover mt-16">
+                            This model is designed to adaptively learn from time-series data and categorial device states to enhance resilience against evolving threats.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-lg-6">
+
+                    <div class="bg-img bora-16 overflow-hidden">
+                        <img class="w-100 d-block" src="../static/m.png" alt="Methodology Image"/>
+                    </div>
+
+                    <!-- Network Traffic Evaluation -->
+                    <div class="model-eval mt-32">
+                        <h4 class="text-white mb-3">Network Traffic - Confusion Matrix</h4>
+                        <div id="confusion_matrix_network" class="bg-dark p-3 bora-12">
+                          <img src="../static/netcm.png"  style="width:600px;"/>
+                        </div>
+
+                        <h4 class="text-white mt-5 mb-3">Network Traffic - Classification Report</h4>
+                        <div id="classification_report_network" class="bg-dark p-3 bora-12" style="white-space: pre-wrap; font-family: monospace;">
+                              <img src="../static/net.png"  style="width:600px;"/>
+                        </div>
+                    </div>
+
+                    <!-- Windows Evaluation -->
+                    <div class="model-eval mt-5">
+                        <h4 class="text-white mb-3">Windows OS - Confusion Matrix</h4>
+                        <div id="confusion_matrix_windows" class="bg-dark p-3 bora-12">
+                            <img src="../static/wincm.png" style="width:600px;"/>
+                           
+                        </div>
+
+                        <h4 class="text-white mt-5 mb-3">Windows OS - Classification Report</h4>
+                        <div id="classification_report_windows" class="bg-dark p-3 bora-12" style="white-space: pre-wrap; font-family: monospace;">
+                                 <img src="../static/win.png"  style="width:600px;"/>
+                         
+                        </div>
+                    </div>
+
+                    <!-- IoT Evaluation -->
+                    <div class="model-eval mt-5">
+                        <h4 class="text-white mb-3">IoT Devices - Confusion Matrix</h4>
+                        <div id="confusion_matrix_iot" class="bg-dark p-3 bora-12">
+                             <img src="../static/iotcm.png"  style="width:600px;"/>
+                        </div>
+
+                        <h4 class="text-white mt-5 mb-3">IoT Devices - Classification Report</h4>
+                        <div id="classification_report_iot" class="bg-dark p-3 bora-12" style="white-space: pre-wrap; font-family: monospace;">
+                         <img src="../static/iot.png"  style="width:600px;"/>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

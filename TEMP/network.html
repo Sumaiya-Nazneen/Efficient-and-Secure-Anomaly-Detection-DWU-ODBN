@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<style>
+    h4 {
+    margin-bottom: 1.5rem;
+    color: #3d89fb;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 2rem;
+    background: #121212;
+    color: #eee;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  select, textarea, button {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    border: none;
+    font-size: 1rem;
+    background: #1f1f1f;
+    color: #eee;
+    resize: vertical;
+  }
+  button {
+    background: #3d89fb;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: #2a66cc;
+  }
+  #result {
+    font-size: 1.1rem;
+    padding: 1rem;
+    background: #222;
+    border-radius: 6px;
+    min-height: 80px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  ul.recommendations {
+    margin-top: 0.8rem;
+    padding-left: 1.2rem;
+  }
+  ul.recommendations li {
+    margin-bottom: 0.4rem;
+  }
+</style>
+
+<h4 style="margin-top:20px;text-align:center">Network Anomaly Detection</h4>
+
+<label for="features-input">Paste Feature Array (JSON list format):</label>
+<textarea id="features-input" rows="8" placeholder='[0, 93.54, 0, 0.05, ...]'></textarea>
+
+<button id="predict-btn">Predict</button>
+
+<div id="result"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  document.getElementById('predict-btn').addEventListener('click', async () => {
+    const featureText = document.getElementById('features-input').value.trim();
+    const resultDiv = document.getElementById('result');
+
+    if (!featureText) {
+      Swal.fire('Error', 'Please paste the feature array JSON.', 'error');
+      return;
+    }
+
+    let features;
+    try {
+      features = JSON.parse(featureText);
+      if (!Array.isArray(features)) {
+        throw new Error('Input must be a JSON array');
+      }
+    } catch (err) {
+      Swal.fire('Error', 'Invalid JSON format: ' + err.message, 'error');
+      return;
+    }
+
+    resultDiv.textContent = 'Predicting...';
+
+    try {
+      const response = await fetch('/predict_network', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ features })  // Send features list
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        let html = `<strong>Prediction:</strong> ${data.prediction}<br>`;
+        if (data.confidence !== undefined) {
+          html += `<strong>Confidence:</strong> ${(data.confidence * 100).toFixed(2)}%<br>`;
+        }
+
+        if (data.risk_level) {
+          html += `<strong>Risk Level:</strong> ${data.risk_level}<br>`;
+        }
+
+        if (data.recommendations && Array.isArray(data.recommendations)) {
+          html += `<strong>Recommendations:</strong><ul class="recommendations">`;
+          data.recommendations.forEach(rec => {
+            html += `<li>${rec}</li>`;
+          });
+          html += `</ul>`;
+        }
+
+        resultDiv.innerHTML = html;
+      } else {
+        throw new Error(data.error || 'Prediction failed');
+      }
+    } catch (err) {
+      resultDiv.textContent = '';
+      Swal.fire('Error', err.message, 'error');
+    }
+  });
+</script>
+
+{% endblock %}
